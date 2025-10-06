@@ -20,7 +20,7 @@ dependencies {
     // SLF4J API
     implementation("org.slf4j:slf4j-api:2.0.12")
     // Logback as the logging implementation
-    implementation("ch.qos.logback:logback-classic:1.5.6")
+    implementation("ch.qos.logback:logback-classic:1.5.13")
 
     // picocli for CLI parsing
     implementation("info.picocli:picocli:4.7.5")
