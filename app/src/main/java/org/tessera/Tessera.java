@@ -3,12 +3,14 @@
  */
 package org.tessera;
 
+import org.tessera.command.GenerateCommand;
+import picocli.CommandLine;
+
 public class Tessera {
-    public String getGreeting() {
-        return "Hello World!";
-    }
 
     public static void main(String[] args) {
-        System.out.println(new Tessera().getGreeting());
+
+        int exitCode = new CommandLine(new GenerateCommand()).execute(args);
+        System.exit(exitCode);
     }
 }
