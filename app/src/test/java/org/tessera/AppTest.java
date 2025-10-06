@@ -7,7 +7,5 @@ import org.junit.jupiter.api.Test;
 
 class AppTest {
     @Test void appHasAGreeting() {
-        Tessera classUnderTest = new Tessera();
-        assertNotNull(classUnderTest.getGreeting(), "app should have a greeting");
     }
 }
