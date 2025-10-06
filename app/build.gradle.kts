@@ -8,6 +8,7 @@
 plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     application
+    java
 }
 
 repositories {
@@ -16,6 +17,10 @@ repositories {
 }
 
 dependencies {
+    // SLF4J API
+    implementation("org.slf4j:slf4j-api:2.0.12")
+    // Logback as the logging implementation
+    implementation("ch.qos.logback:logback-classic:1.5.6")
 
     // picocli for CLI parsing
     implementation("info.picocli:picocli:4.7.5")
