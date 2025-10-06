@@ -1,10 +1,9 @@
 package org.tessera.domain.infrastructure.reader;
 
 import org.apache.poi.ss.usermodel.*;
-import org.tessera.domain.model.Placeholder;
-
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.tessera.domain.model.CandidateRecord;
+import org.tessera.domain.model.Placeholder;
 
 import java.io.IOException;
 import java.io.InputStream;

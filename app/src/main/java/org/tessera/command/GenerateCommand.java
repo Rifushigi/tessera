@@ -9,8 +9,8 @@ import picocli.CommandLine;
 
 import java.io.File;
 import java.nio.file.Path;
-import java.util.concurrent.Callable;
 import java.util.Scanner;
+import java.util.concurrent.Callable;
 
 @CommandLine.Command(
         name = "generate",

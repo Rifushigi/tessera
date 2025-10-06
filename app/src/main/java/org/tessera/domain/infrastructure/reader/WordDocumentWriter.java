@@ -35,7 +35,7 @@ public class WordDocumentWriter {
     public void generateDocument(CandidateRecord record, OutputStream outputStream) throws IOException {
 
         try (InputStream templateStream = Files.newInputStream(templatePath);
-             XWPFDocument document = new XWPFDocument(templateStream);) {
+             XWPFDocument document = new XWPFDocument(templateStream)) {
 
             Map<String, String> replacements = getReplacementsMap(record);
             replacePlaceholders(document, replacements);

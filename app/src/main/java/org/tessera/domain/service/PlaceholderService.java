@@ -32,7 +32,7 @@ public class PlaceholderService {
         }
 
         try (InputStream is = Files.newInputStream(templatePath);
-             XWPFDocument document = new XWPFDocument(is);) {
+             XWPFDocument document = new XWPFDocument(is)) {
 
             // scan paragraphs
             for (XWPFParagraph p : document.getParagraphs()) {
