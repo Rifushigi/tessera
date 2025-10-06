@@ -21,8 +21,8 @@ dependencies {
     implementation("info.picocli:picocli:4.7.5")
 
     // Apache POI for Excel and Word document manipulation
-    // For reading/writing .xlsx files (Excel)
-    implementation("org.apache.poi:poi-ooxml:5.2.5")
+    // For reading/writing .xlsx files
+    implementation("org.apache.poi:poi-ooxml:5.4.0")
     // For accessing the core POI components
     implementation("org.apache.poi:poi:5.2.5")
 
