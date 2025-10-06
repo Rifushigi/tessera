@@ -1,7 +1,7 @@
-package org.tessera.command;
+package org.rifushigi.command;
 
-import org.tessera.util.AnsiColors;
-import org.tessera.util.FileValidator;
+import org.rifushigi.util.AnsiColors;
+import org.rifushigi.util.FileValidator;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;

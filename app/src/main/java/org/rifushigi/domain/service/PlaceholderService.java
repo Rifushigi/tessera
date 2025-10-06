@@ -1,7 +1,7 @@
-package org.tessera.domain.service;
+package org.rifushigi.domain.service;
 
 import org.apache.poi.xwpf.usermodel.*;
-import org.tessera.domain.model.Placeholder;
+import org.rifushigi.domain.model.Placeholder;
 
 import java.io.IOException;
 import java.io.InputStream;

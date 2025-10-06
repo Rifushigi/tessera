@@ -1,10 +1,10 @@
-package org.tessera.command;
+package org.rifushigi.command;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.tessera.domain.service.GenerationService;
-import org.tessera.util.AnsiColors;
-import org.tessera.util.FileValidator;
+import org.rifushigi.domain.service.GenerationService;
+import org.rifushigi.util.AnsiColors;
+import org.rifushigi.util.FileValidator;
 import picocli.CommandLine;
 
 import java.io.File;
@@ -12,12 +12,6 @@ import java.nio.file.Path;
 import java.util.Scanner;
 import java.util.concurrent.Callable;
 
-@CommandLine.Command(
-        name = "generate",
-        description = "Generates personalized documents from a template and data file.",
-        mixinStandardHelpOptions = true,
-        version = "Tessera 1.0"
-)
 public class GenerateCommand implements Callable<Integer> {
     private static final Logger logger = LoggerFactory.getLogger(GenerateCommand.class);
 

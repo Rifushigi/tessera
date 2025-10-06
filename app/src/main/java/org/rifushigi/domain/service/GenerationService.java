@@ -1,11 +1,11 @@
-package org.tessera.domain.service;
+package org.rifushigi.domain.service;
 
-import org.tessera.domain.infrastructure.reader.ExcelReader;
-import org.tessera.domain.infrastructure.reader.WordDocumentWriter;
-import org.tessera.domain.model.CandidateRecord;
-import org.tessera.domain.model.Placeholder;
-import org.tessera.util.AnsiColors;
-import org.tessera.util.FileValidator;
+import org.rifushigi.domain.infrastructure.ExcelReader;
+import org.rifushigi.domain.infrastructure.WordDocumentWriter;
+import org.rifushigi.domain.model.CandidateRecord;
+import org.rifushigi.domain.model.Placeholder;
+import org.rifushigi.util.AnsiColors;
+import org.rifushigi.util.FileValidator;
 
 import java.io.FileOutputStream;
 import java.io.IOException;

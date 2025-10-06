@@ -1,4 +1,4 @@
-package org.tessera.domain.model;
+package org.rifushigi.domain.model;
 
 import java.nio.file.Path;
 import java.util.Collections;

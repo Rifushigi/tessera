@@ -1,4 +1,4 @@
-package org.tessera.util;
+package org.rifushigi.util;
 
 
 /**

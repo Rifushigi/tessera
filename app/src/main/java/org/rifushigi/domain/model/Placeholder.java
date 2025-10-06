@@ -1,4 +1,4 @@
-package org.tessera.domain.model;
+package org.rifushigi.domain.model;
 
 /**
  * Represents a variable placeholder found within a document template.

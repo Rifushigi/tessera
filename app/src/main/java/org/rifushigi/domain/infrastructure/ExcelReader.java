@@ -1,9 +1,9 @@
-package org.tessera.domain.infrastructure.reader;
+package org.rifushigi.domain.infrastructure;
 
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.tessera.domain.model.CandidateRecord;
-import org.tessera.domain.model.Placeholder;
+import org.rifushigi.domain.model.CandidateRecord;
+import org.rifushigi.domain.model.Placeholder;
 
 import java.io.IOException;
 import java.io.InputStream;
