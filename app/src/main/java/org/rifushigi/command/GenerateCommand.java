@@ -9,14 +9,25 @@ import picocli.CommandLine;
 
 import java.io.File;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.Callable;
 
+@CommandLine.Command(
+        name = "generate",
+        mixinStandardHelpOptions = true,
+        version = "Tessera 1.0",
+        description = "Generates personalized documents from a template and data file."
+)
 public class GenerateCommand implements Callable<Integer> {
     private static final Logger logger = LoggerFactory.getLogger(GenerateCommand.class);
 
-    @CommandLine.Option(names = {"-t", "--template"}, description = "Path to the Word template (.docx).")
-    private File templateFile;
+    @CommandLine.Option(
+            names = {"-t", "--template"},
+            required = false,
+            description = "Paths to one or more Word template files (.docx)."
+    )
+    private List<File> templateFiles;
 
     @CommandLine.Option(names = {"-d", "--data"}, description = "Path to the Excel data file (.xlsx).")
     private File dataFile;
@@ -30,25 +41,26 @@ public class GenerateCommand implements Callable<Integer> {
     @Override
     public Integer call() {
         if (interactiveMode) {
-            System.out.println(AnsiColors.colored(AnsiColors.CYAN, "🚀 Starting Tessera in interactive mode..."));
+            System.out.println(AnsiColors.colored(AnsiColors.CYAN, "Starting Tessera in interactive mode..."));
             try (Scanner scanner = new Scanner(System.in)) {
                 InteractiveMode interactive = new InteractiveMode(scanner);
                 InteractiveMode.Result result = interactive.collectInput();
-                return runGeneration(result.templatePath(), result.dataPath(), result.outputDirectory());
+                return runGeneration(result.templatePaths(), result.dataPath(), result.outputDirectory());
             }
         } else {
             // Validate command-line arguments
-            if (templateFile == null || dataFile == null) {
+            if (templateFiles == null || dataFile == null) {
                 logger.error(AnsiColors.colored(AnsiColors.RED, "Missing required command-line arguments. Use --help for details or run with --interactive."));
                 return 1;
             }
-            return runGeneration(templateFile.toPath(), dataFile.toPath(), outputDirectory.toPath());
+            List<Path> templatePaths = templateFiles.stream().map(File::toPath).toList();
+            return runGeneration(templatePaths, dataFile.toPath(), outputDirectory.toPath());
         }
     }
 
-    private Integer runGeneration(Path templatePath, Path dataPath, Path outputDirectory) {
+    private Integer runGeneration(List<Path> templatePath, Path dataPath, Path outputDirectory) {
         // Validation moved from GenerationService to the command level
-        if (!FileValidator.fileExistsAndIsReadable(templatePath) || !FileValidator.hasExtension(templatePath, ".docx")) {
+        if (!FileValidator.fileExistsAndIsReadable(templatePath.getFirst()) || !FileValidator.hasExtension(templatePath.getFirst(), ".docx")) {
             logger.error(AnsiColors.colored(AnsiColors.RED, "Invalid template file: " + templatePath));
             return 1;
         }
