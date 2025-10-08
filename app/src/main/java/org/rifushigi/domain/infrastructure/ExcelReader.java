@@ -53,8 +53,8 @@ public class ExcelReader {
         DataFormatter dataFormatter = new DataFormatter();
 
         // I'm assuming the first row is the header
-        // As it should be :)
-        Row headerRow = sheet.getRow(0);
+        // As it should be... Apparently it was not :(
+        Row headerRow = sheet.getRow(1);
         if(headerRow == null){
             return records;
         }
