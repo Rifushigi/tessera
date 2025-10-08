@@ -9,14 +9,19 @@ plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     application
     java
+//    id("org.graalvm.buildtools.native") version "0.11.1"
+    id("com.gradleup.shadow") version "9.2.2"
 }
 
 repositories {
     // Use Maven Central for resolving dependencies.
+    gradlePluginPortal()
     mavenCentral()
 }
 
 dependencies {
+
+    //    annotationProcessor("info.picocli:picocli-codegen:4.7.5")
     // SLF4J API
     implementation("org.slf4j:slf4j-api:2.0.12")
     // Logback as the logging implementation
@@ -51,6 +56,18 @@ application {
     // Define the main class for the application.
     mainClass = "org.rifushigi.Tessera"
 }
+
+//graalvmNative {
+//    binaries {
+//        named("main") {
+//            imageName.set("tessera")
+//            buildArgs.add("--add-charset=CP1252")
+//        }
+//    }
+//    metadataRepository {
+//        enabled.set(true)
+//    }
+//}
 
 tasks.named<Test>("test") {
     // Use JUnit Platform for unit tests.
