@@ -54,6 +54,9 @@ public class PlaceholderService {
         return placeholders;
     }
 
+    /**
+     * Scans a paragraph's concatenated text to find fragmented placeholders.
+     */
     private void scanParagraph(XWPFParagraph p, Set<Placeholder> placeholders){
 
         StringBuilder paragraphText = new StringBuilder();
