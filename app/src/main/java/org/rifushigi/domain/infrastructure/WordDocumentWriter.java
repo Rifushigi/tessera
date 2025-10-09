@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
+
 public class WordDocumentWriter {
 
     private final Path templatePath;
@@ -25,30 +26,36 @@ public class WordDocumentWriter {
     }
 
     /**
-     * Generates a single personalised document for a given candidate record.
+     * Generates a single personalised document (DOCX format) for a given candidate record.
      *
      * @param record       The candidate record containing the data for replacement.
      * @param outputStream The output stream to which the new document will be written.
      * @throws IOException if an error occurs during the file I/O.
-     *
      */
     public void generateDocument(CandidateRecord record, OutputStream outputStream) throws IOException {
-
-        try (InputStream templateStream = Files.newInputStream(templatePath);
-             XWPFDocument document = new XWPFDocument(templateStream)) {
-
-            Map<String, String> replacements = getReplacementsMap(record);
-            replacePlaceholders(document, replacements);
-
+        try (XWPFDocument document = createAndReplaceDocument(record)) {
             document.write(outputStream);
         }
     }
 
     /**
-     * Replaces all the placeholders in the document (paragraphs and tables)
+     * Creates a new document from the template and applies all placeholder replacements.
+     */
+    private XWPFDocument createAndReplaceDocument(CandidateRecord record) throws IOException {
+        XWPFDocument document;
+        try (InputStream templateStream = Files.newInputStream(templatePath)) {
+            document = new XWPFDocument(templateStream);
+        }
+
+        Map<String, String> replacements = getReplacementsMap(record);
+        replacePlaceholders(document, replacements);
+
+        return document;
+    }
+
+    /**
+     * Replaces all the placeholders in the document
      * with the values from the replacements map.
-     * This implementation is optimised for placeholders that appear only once... For now :)
-     *
      */
     private void replacePlaceholders(XWPFDocument document, Map<String, String> replacements) {
         // Replace in main paragraphs
@@ -68,35 +75,46 @@ public class WordDocumentWriter {
         }
     }
 
+    /**
+     * Rewritten to handle fragmented placeholders across multiple XWPFRun elements.
+     * It performs replacement on the paragraph's concatenated text, then deletes
+     * the old runs and creates a new run with the replaced text.
+     */
     private void replaceInParagraph(XWPFParagraph paragraph, Map<String, String> replacements) {
+        String paragraphText = paragraph.getText();
 
-        for (XWPFRun run : paragraph.getRuns()) {
-            String text = run.getText(0);
-            if (text == null || text.isBlank()) {
-                continue;
-            }
+        for (Placeholder placeholder : placeholders) {
+            String fullTag = placeholder.fullText();
 
-            for (Placeholder placeholder : placeholders) {
-                if (text.contains(placeholder.fullText())) {
-                    String replacementValue = replacements.getOrDefault(placeholder.varName(), "");
+            if (paragraphText.contains(fullTag)) {
+                String replacementValue = replacements.getOrDefault(placeholder.varName(), "");
 
-                    // replace the text in the run
-                    text = text.replace(placeholder.fullText(), replacementValue);
-                    run.setText(text, 0);
+                String newParagraphText = paragraphText.replace(fullTag, replacementValue);
 
-                    // apply specific formatting based on the var name
-                    applySpecificFormatting(run, placeholder.varName());
+                // delete all existing runs in the paragraph (backward)
+                int numRuns = paragraph.getRuns().size();
+                for (int i = numRuns - 1; i >= 0; i--) {
+                    paragraph.removeRun(i);
                 }
+
+                // create a new run with the replaced text
+                XWPFRun newRun = paragraph.createRun();
+                newRun.setText(newParagraphText, 0);
+
+                applySpecificFormatting(newRun, placeholder.varName());
+
+                return; // Exit after replacing one placeholder to simplify the run management
             }
         }
     }
 
     private void applySpecificFormatting(XWPFRun run, String varName) {
 
-        if (varName.equalsIgnoreCase("fullName")) {
+        if (varName.equalsIgnoreCase("FULL NAME")) {
             run.setFontFamily("Lucida Calligraphy");
             run.setFontSize(22);
-        } else if (varName.equalsIgnoreCase("date")) {
+        } else if (varName.equalsIgnoreCase("DATE")) {
+            run.setFontFamily("Swis721 Th TL");
             run.setFontSize(16);
         }
     }
@@ -105,8 +123,14 @@ public class WordDocumentWriter {
 
         Map<String, String> replacements = new HashMap<>();
         for (Placeholder p : placeholders) {
-            String value = record.getValue(p.varName());
-            replacements.put(p.varName(), Objects.requireNonNullElse(value, ""));
+            String varName = p.varName();
+            String value = record.getValue(varName);
+            replacements.put(varName, Objects.requireNonNullElse(value, ""));
+
+            // Override the DATE variable with the user-requested value
+            if (varName.equalsIgnoreCase("DATE")) {
+                replacements.put(varName, "20th September 2025");
+            }
         }
 
         return replacements;
