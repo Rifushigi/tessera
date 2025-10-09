@@ -5,18 +5,25 @@ package org.rifushigi;
 
 import org.rifushigi.command.GenerateCommand;
 import picocli.CommandLine;
+import picocli.CommandLine.Command;
 
-@CommandLine.Command(
-        name = "generate",
-        description = "Generates personalized documents from a template and data file.",
+@Command(
+        name = "tessera",
         mixinStandardHelpOptions = true,
-        version = "Tessera 1.0"
+        version = "Tessera 1.0",
+        description = "Automates certificate generation from Word templates and Excel data.",
+        subcommands = {
+                GenerateCommand.class,
+                CommandLine.HelpCommand.class
+        }
 )
 public class Tessera {
 
+    private Tessera() {}
+
     public static void main(String[] args) {
 
-        int exitCode = new CommandLine(new GenerateCommand()).execute(args);
+        int exitCode = new CommandLine(new Tessera()).execute(args);
         System.exit(exitCode);
     }
 }
